@@ -3,6 +3,7 @@ import { pool } from '../database'
 
 import { file } from "googleapis/build/src/apis/file";
 import { crossOriginEmbedderPolicy, crossOriginResourcePolicy } from "helmet";
+import { url } from "inspector";
 const router = Router();
 
 const multer = require("multer");
@@ -23,6 +24,7 @@ const drive = google.drive({
   version: 'v3',
   auth: oauth2Client
 });
+var urlbase;
 var filePath;
 var archivo;
 var storage = multer.diskStorage({
@@ -34,10 +36,11 @@ var storage = multer.diskStorage({
   }
 })
 var upload = multer({ storage: storage });
-router.post("/", upload.single("imagen"), async (req, res, next) => {
+router.post("/:idusuario", upload.single("imagen"), async (req, res, next) => {
   filePath = path.join("src/archivos/", req.file.originalname);
-  console.log(filePath);
- 
+
+  uploadFile();
+
 
   const file = req.file;
   archivo = file.originalname;
@@ -46,18 +49,13 @@ router.post("/", upload.single("imagen"), async (req, res, next) => {
     error.httpStatusCode = 400;
     return next(error);
   } else {
-    uploadFile();
+ 
   }
   res.send("Archivo subido correctamente: " + file.originalname);
 
 });
 
-const nombre="";
-const tipo="";
-const url22="";
-const iddrive="iddrive";
-const idusuario=0;
-var objetofile;
+
 async function uploadFile() {
   try {
     const response = await drive.files.create({
@@ -75,11 +73,15 @@ async function uploadFile() {
 console.log(response.data);
 let nombre=response.data.name;
 let id=response.data.id;
+this.urlbase=response.data.id;
 let tipo=response.data.mimeType;
 console.log(response.data.name);
 console.log(response.data.mimeType);
 console.log(response.data.id);
-  await pool.query('insert into archivos (nombre,tipo,iddrive) values ($1,$2,$3)', [nombre,tipo,id]);
+  await pool.query('insert into archivos (nombre,tipo,iddrive,idusuario,estado) values ($1,$2,$3,2,1)', [nombre,tipo,id]);
+console.log(this.iduser);
+
+generatePublicUrl();
 
   } catch (error) {
     console.log(error.message);
@@ -88,7 +90,7 @@ console.log(response.data.id);
 
 async function generatePublicUrl() {
   try {
-    const fileId = '18nSpQH9uX22K3CsK6lc1L0YenEz78RJ3';
+    const fileId = this.urlbase;
     await drive.permissions.create({
         fileId: fileId,
         requestBody: {
@@ -102,18 +104,22 @@ async function generatePublicUrl() {
     });
     console.log('------------Result url---------');
     console.log(result.data);
+    let url=result.data.webViewLink;
+    let iddrive=this.urlbase;
+    await pool.query('update  archivos set url=$1 where iddrive=$2', [url,iddrive]);
 
   } catch (error) {
     console.log(error.message);
   }
+  deleteFile();
 }
-generatePublicUrl();
 
+deleteFile();
 async function deleteFile(){
   try{
 const response = await drive.files.delete({
 
-  fileId:'1v3gAl5-PsEVuZ0HgwU7KaHFjF6Lur4YU',
+  fileId:urlbase,
 });
 console.log(response.data,response.status);
   }catch(error){

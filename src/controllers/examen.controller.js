@@ -2,9 +2,9 @@
 import { pool } from '../database'
 const helpers = require('../libs/helpers');
 
-export const listarusuario = async(req, res)=>{
+export const listarArchivos = async(req, res)=>{
     try {
-        const response = await pool.query('select * from fc_m_listar_usuario()');
+        const response = await pool.query('select * from fc_m_listar_archivos(2)');
         return res.status(200).json(response.rows);
     } catch (e) {
         console.log(e);
