@@ -50,7 +50,7 @@ export const createUser = async(req, res)=>{
     try {
         const{ username, password   } = req.body;
         const password2 = await helpers.encryptPassword(password);
-        await pool.query('INSERT INTO usuario (username, password,estado,idrol) values($1,$2,1,3)', [ username, password2]);
+        await pool.query('INSERT INTO usuario (username, password) values($1,$2)', [ username, password2]);
         return res.status(200).json(
             `Usuario ${ username } creado correctamente...!`);
     } catch (e) {

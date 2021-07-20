@@ -19,6 +19,8 @@ const oauth2Client = new google.auth.OAuth2(
   CLIENT_SECRET,
   REDIRECT_URI
 );
+
+
 oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 const drive = google.drive({
   version: 'v3',
@@ -39,7 +41,6 @@ var upload = multer({ storage: storage });
 router.post("/:idusuario", upload.single("imagen"), async (req, res, next) => {
   filePath = path.join("src/archivos/", req.file.originalname);
 
-  uploadFile();
 
 
   const file = req.file;
@@ -49,7 +50,7 @@ router.post("/:idusuario", upload.single("imagen"), async (req, res, next) => {
     error.httpStatusCode = 400;
     return next(error);
   } else {
- 
+    uploadFile();
   }
   res.send("Archivo subido correctamente: " + file.originalname);
 
@@ -111,10 +112,10 @@ async function generatePublicUrl() {
   } catch (error) {
     console.log(error.message);
   }
-  deleteFile();
+
 }
 
-deleteFile();
+
 async function deleteFile(){
   try{
 const response = await drive.files.delete({
