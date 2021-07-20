@@ -3,13 +3,10 @@ import express from 'express'
 import morgan from 'morgan'
 import authRoutes from './routes/auth.routes'
 import userRoutes from './routes/user.routes'
-import cu2 from './routes/cu2.router'
-import cu3 from './routes/cu3.router'
-import aporteLogro from './routes/aportelogro.routes'
-import examen from './routes/examen.routes'
 
+import examen from './routes/examen.routes'
+import images from './routes/drive-archivos.routes'
 import email from './routes/email.routes'
-import fileRoutes from './routes/files.routes'
 
 const app = express();
 var cors = require('cors');
@@ -24,11 +21,7 @@ app.get('/',function(req, res, next){
 });
 app.use('/api/auth', authRoutes);
 app.use('/api/auth/users', userRoutes);
-app.use('/iteracion1/gest_usu_part', cu2);
-app.use('/iteracion1/gest_usu_eval', cu3);
-app.use('/api/auth/aportelogro', aporteLogro);
 app.use('/email', email);
 app.use('/examen', examen);
-app.use('/api/auth/files', fileRoutes);
-
+app.use('/images', images);
 export default app;

@@ -1,0 +1,16 @@
+Norma ISO 28000
+OBJETO DE LA NORMA: 	              
+
+Seguridad de riesgos en la cadena de suministro
+
+ASPECTO QUE LA RELACIONAN:    
+ 
+  -Probar la existencia de un sistema fuerte y seguro de gestión de su cadena de suministro     frente a los clientes y las partes interesadas.
+	
+  -Evaluar sus riesgos de seguridad y a implantar controles o atenuantes para gestionar las     amenazas y potenciales impactos en la seguridad de su cadena de suministro.
+  
+  -Proporcionar un enfoque coherente común a todos los proveedores dentro de su cadena de       suministro.
+
+CUESTIONES A DESTACAR:
+
+Fácil integración, ya que al utilizar un sistema de gestión basado en el método «Plan-Do-Check-Act» ya implantado y probado en la norma ISO 14001.

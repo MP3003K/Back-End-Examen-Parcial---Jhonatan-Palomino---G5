@@ -1,14 +1,21 @@
 import { transporter } from '../libs/helper.email';
 
+
+
+const nodemailer = require("nodemailer");
+
 export const email = async(req, res)=>{
     try {
-        const{ correo} = req.body;
+        const{ correo_emisor} = req.body;
+        const{ correo_destinatario} = req.body;
+        const{ asunto} = req.body;
+        const{ mensaje} = req.body;
         await transporter.sendMail({
-            from: '"DAD 👻" <mijailpalomino@upeu.edu.pe>', // sender address
-            to: correo, // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Hello world?", // plain text body
-            html: "<b>Hello world?</b>", // html body
+            from: correo_emisor,
+            to: correo_destinatario, 
+            subject: asunto,
+            text: mensaje, 
+       
           });
           return res.status(200).json('correo enviado correctamente...!');
     } catch (e) {
